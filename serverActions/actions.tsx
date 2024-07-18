@@ -2,13 +2,8 @@
 
 import {type formState} from '@/types';
 import {encyptPassword} from '@/lib/bcrypt';
-import { signUpData } from '@/types';
 import {saveUsertoDb} from '@/lib/authDbTransactions';
-
-function validateEmail (email: string): boolean {
-    return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email.toLowerCase());
-}
-
+import { validateEmail } from '@/lib/utility';
 
 function validate ({name, email, password}: {name: string; email: string; password: string;}): {message: string[] ; formValid: boolean} {
     let formValid: boolean = true;
@@ -22,11 +17,10 @@ function validate ({name, email, password}: {name: string; email: string; passwo
             formValid = false;
             message.push('Please enter the valid email address.')
         }
-        else if (password.length < 6) {
+        if (password.length < 6) {
             formValid = false;
             message.push('Password must be at least 6 characters long.')
-        }
-    
+        }    
     }
     
     return  {
@@ -66,8 +60,13 @@ export async function signUpAction (initialState: formState, formData: FormData)
     //save the user details to db
 
     try {
-        let userId = await saveUsertoDb({name, email, password: encryptedPassword});
-        console.log(userId);
+        let data = await saveUsertoDb({name, email, password: encryptedPassword});
+        const userId = data.id;
+
+        if (typeof userId === 'number') {
+            status = 'success'
+        }
+
     } catch (error: any) {
         if (error.message.includes('duplicate key')) {
             message.push('Email already exists.');
@@ -76,6 +75,6 @@ export async function signUpAction (initialState: formState, formData: FormData)
         }
         status = 'fail';
     }   
-    
+
     return { message: message, status: status }
 }

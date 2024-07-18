@@ -1,7 +1,6 @@
 'use client';
 import React, {type ReactNode} from "react";
 import { FormType } from "@/types";
-import { useFormStatus } from "react-dom";
 
 export default function  custormForm ({children, action, formType, onSubmit}: {children: ReactNode; action: (formData: FormData) => void; onSubmit: (event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => void, formType: FormType}) {
     

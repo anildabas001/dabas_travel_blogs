@@ -13,3 +13,7 @@ export enum FormType {
     'login' = 'Login',
     'signUp' = 'Sign up'
 }
+
+export type Status =  'success' | 'fail'
+
+export type APIFormat = {status: Status, message: string[], data: {}}
