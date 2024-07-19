@@ -37,12 +37,13 @@ function Copyright(props: muiStyle) {
 
 const defaultTheme = createTheme();
 
-export default function authorizationForm () {
+export default function AuthorizationForm () {
     let loginEmail = useRef<HTMLInputElement>(null);
     let loginPassword = useRef<HTMLInputElement>(null);
 
     let helperText: ReactNode;
 
+    const router = useRouter();
     const searchParams = useSearchParams();
     let formParam = searchParams.get("form");
     const currentPath = usePathname();
@@ -50,6 +51,7 @@ export default function authorizationForm () {
     const [formToggle, updateFormToggle] = useState<FormType>(FormType.login);
     const [errorMessage, setErrorMessage] = useState<string[]>([]);
     const [errorStatus, setErrorStatus] = useState<boolean>(false);
+    const [loading, updateLoading] = useState<boolean>(false);
 
     useEffect(() => {
         if (formParam === FormType.signUp) {
@@ -114,7 +116,8 @@ export default function authorizationForm () {
 
     const handleLogin = async (event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
         event.preventDefault();   
-        
+        updateLoading(true);
+
         let errorStatus = false;
         let errorMessage: string[] = [];
         //get form fields
@@ -133,15 +136,15 @@ export default function authorizationForm () {
             password,
         });
 
-        console.log('signin results.............', result);
-
         if (result?.error) {
+            updateLoading(false);
             errorStatus = true;
             errorMessage.push(result.error);
         } else {
             setErrorStatus(errorStatus);
             setErrorMessage(errorMessage);
             // Redirect to a different page or perform other actions
+            router.push('/');
         }
 
         setErrorStatus(errorStatus);
@@ -227,7 +230,7 @@ export default function authorizationForm () {
                     inputRef={loginPassword}
                   />            
                   {helperText}
-                  <SubmitButton>
+                  <SubmitButton formType={formToggle} disabled={loading}>
                     {formToggle}
                   </SubmitButton>
                   <Grid container>                  

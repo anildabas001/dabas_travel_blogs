@@ -22,6 +22,7 @@ function validateLoginFields(email: string | undefined, password: string | undef
 
 const authOptions: NextAuthOptions = {
     // Configure authentication providers
+    secret: process.env.AUTH_SECRET,
     session: {
         strategy: "jwt",
     },
@@ -71,7 +72,7 @@ const authOptions: NextAuthOptions = {
                 //throw Error if login failed else send object with email
 
                 if (isLoggedIn) {
-                  return { name: userDb, email: userDb.email, id: userDb.id };
+                  return { name: userDb.name, email: userDb.email, id: userDb.id };
                 } else {
                   return null;
                 }

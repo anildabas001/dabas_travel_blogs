@@ -7,7 +7,7 @@ type muiStyle = {
     sx: SxProps<Theme>;
 }
 
-export default function logoBlog (props: muiStyle) {
+export default function LogoBlog (props: muiStyle) {
     return (
         <Avatar sx={props.sx}>
             <Image priority src={blogImage} alt="blog logo"/>
