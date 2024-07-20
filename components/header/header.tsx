@@ -3,11 +3,7 @@ import {
     Toolbar,
     Typography,
     Box,
-    IconButton,
-    Menu,
-    MenuItem,
-    Button,
-    Tooltip
+    Button
  } from "@mui/material"; 
 import LogoBlog from "@/components/logoBlog";
 import MobileMenu from "./mobileMenu";
@@ -15,17 +11,17 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import UserMenu from "./userMenu";
 import authOptions from "@/app/api/auth/[...nextauth]/authOptions";
+import { getUserDetails } from "@/lib/authDbTransactions";
+import{UserData} from "@/types";
 
 const pages = ['Blogs', 'Write'];
-const settings = ['Profile', 'Change Password',  'Logout'];
+const settings = ['Profile', 'Change Password', 'Logout'];
 
-export default async function Header ({title}: {title: string;}){
-    const isLoggedin = false;
+export const dynamic = 'force-dynamic';
+export const revalidate= 1;
 
-    const userSession = await getServerSession(authOptions); 
-    
-    console.log(userSession);
-      
+export default async function Header ({title}: {title: string;}){    
+          
     return (
         <>
             {/* <AppBar sx={{px: 0, borderBottom: 1, borderColor: 'divider', border: 0}} component="nav" position="static"> */}
@@ -86,15 +82,7 @@ export default async function Header ({title}: {title: string;}){
                     </Box>
                   
                     <Box sx={{ flexGrow: 0 }}>
-                        {
-                            isLoggedin ? <UserMenu settings={settings}/> : 
-
-                            <Button
-                              sx={{ my: 2, display: 'block' }}
-                            >
-                                Login
-                            </Button>
-                        }                      
+                        <UserMenu settings={settings} />
                     </Box>
                 </Toolbar>
             {/* </AppBar> */}

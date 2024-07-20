@@ -19,3 +19,12 @@ export async function signInDbVerify (email: string) {
 
     return res.rows[0];
 }
+
+export async function getUserDetails (email: string) {
+    const text = 'SELECT email, name from users where email=$1 Limit 1';
+    const values = [email.toLowerCase()];
+    
+    const res = await query(text, values);
+
+    return res.rows[0];
+}

@@ -17,3 +17,5 @@ export enum FormType {
 export type Status =  'success' | 'fail'
 
 export type APIFormat = {status: Status, message: string[], data: {}}
+
+export type UserData = {email: string; name: string}

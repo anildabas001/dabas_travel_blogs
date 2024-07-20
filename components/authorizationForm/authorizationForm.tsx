@@ -59,7 +59,7 @@ export default function AuthorizationForm () {
         } else {
             updateFormToggle(FormType.login);
         }
-    }, []);
+    }, [formParam]);
     
     const changeForm = () => {
         const newFormType = formToggle === FormType.login ? FormType.signUp : FormType.login;
@@ -144,7 +144,8 @@ export default function AuthorizationForm () {
             setErrorStatus(errorStatus);
             setErrorMessage(errorMessage);
             // Redirect to a different page or perform other actions
-            router.push('/');
+            setTimeout(() => {router.replace('/');}, 500)
+            
         }
 
         setErrorStatus(errorStatus);

@@ -1,0 +1,17 @@
+CREATE TABLE users (
+    id INT SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE posts (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    location VARCHAR(255),
+    publicationDate TIMESTAMP,
+    publisherAlias VARCHAR(255),
+	userId INT,
+    Foreign key (userId) references users(id)
+);

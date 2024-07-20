@@ -1,16 +1,37 @@
 'use client';
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { 
     Typography,
     IconButton,
     Menu,
     MenuItem,
-    Tooltip
+    Tooltip,
+    Button
  } from "@mui/material"; 
  import Avatar from '@mui/material/Avatar';
  import Link from "next/link";
+ import { signOut } from "next-auth/react";
+ import {UserData} from "@/types";
+import { getSession } from "next-auth/react";
 
 export default function UserMenu ({settings}:{settings: string[]}) {
+    const [isLoggedIn, updateLoginStatus] = useState<boolean>(false);
+    const [name, updateName] = useState<string>("");
+
+    useEffect (() => {
+        const session = getSession().then( session => {
+            if (session?.user) {
+                updateLoginStatus(true);
+                updateName(session?.user?.name as string);
+            }
+        });
+    }, []);
+
+    let firstNameLetter: string ='';
+    
+    if (name) {
+        firstNameLetter = name[0].toUpperCase();
+    } 
 
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
         null
@@ -23,16 +44,22 @@ export default function UserMenu ({settings}:{settings: string[]}) {
       
         
       
-    const handleCloseUserMenu = () => {
+    const handleCloseUserMenu = (setting: string) => {
       setAnchorElUser(null);
+
+      if (setting.toLowerCase() === 'logout') {
+        signOut();
+      }
     };
 
     return(
         <>
-            <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> 
-                </IconButton>
+            {isLoggedIn ?<> <Tooltip title="Open settings">
+                <>
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <Avatar>{firstNameLetter}</Avatar>                       
+                    </IconButton>                    
+                </>                
             </Tooltip>
             <Menu
               sx={{ mt: '45px' }}
@@ -49,13 +76,25 @@ export default function UserMenu ({settings}:{settings: string[]}) {
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+            > <>
+                <MenuItem>
+                    <Typography textAlign="center">Welcome {name?.charAt(0).toUpperCase() + name?.slice(1)} !</Typography>
                 </MenuItem>
-              ))}
-            </Menu>
+                {settings.map((setting) => {
+                  return (
+                  <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                )})}
+              </>
+            </Menu> </>:
+                <Link href="/auth?form=login">
+                <Button
+                  sx={{ my: 2, display: 'block' }}
+                >
+                    Login
+                </Button>
+         </Link>}
         </>
     );
 }
