@@ -44,13 +44,17 @@ export default function UserMenu ({settings}:{settings: string[]}) {
       
         
       
-    const handleCloseUserMenu = (setting: string) => {
-      setAnchorElUser(null);
-
-      if (setting.toLowerCase() === 'logout') {
-        signOut();
-      }
+    const handleCloseUserMenu = () => {
+      setAnchorElUser(null);      
     };
+
+    const handleSettingClick = (setting: string) => {
+        if (setting?.toLowerCase() === 'logout') {
+            signOut();
+        }
+
+        setAnchorElUser(null); 
+    }
 
     return(
         <>
@@ -82,7 +86,7 @@ export default function UserMenu ({settings}:{settings: string[]}) {
                 </MenuItem>
                 {settings.map((setting) => {
                   return (
-                  <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
+                  <MenuItem key={setting} onClick={() => handleSettingClick(setting)}>
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 )})}

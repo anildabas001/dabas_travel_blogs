@@ -19,3 +19,5 @@ export type Status =  'success' | 'fail'
 export type APIFormat = {status: Status, message: string[], data: {}}
 
 export type UserData = {email: string; name: string}
+
+export type BlogContent = {id: number; title: string; content: string; location: string; publicationdate: Date; publisheralias: string}

@@ -28,3 +28,11 @@ export async function getUserDetails (email: string) {
 
     return res.rows[0];
 }
+
+export async function getRecentBlogs () {
+    const text = 'SELECT * from posts ORDER BY publicationDate DESC LIMIT 3';
+
+    const res = await query(text);
+    console.log('most recent rows', res.rows)
+    return res.rows;
+}
