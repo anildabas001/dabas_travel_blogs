@@ -1,25 +1,17 @@
 'use client';
+import React, { useState } from "react";
+import { dateFormat } from "@/lib/utility";
 import { BlogContent } from "@/types";
-import { Grid, Typography, Box, Container, Button } from "@mui/material";
-import { Truncate } from '@re-dev/react-truncate';
+import { Typography, Box, Card, Button } from "@mui/material";
 import parse from 'html-react-parser';
+import TruncateMarkup from 'react-truncate-markup';
 
 export function RecentPartBlog ({blogContent}: {blogContent:BlogContent}) {
-    const publicationDate = blogContent?.publicationdate;
-
-    // Convert the publication date to a Date object
-    const date = new Date(publicationDate);
-
-    // Format the date
-    const formattedDate = date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-
+    const publicationDate = dateFormat(blogContent?.publicationdate);
+    
     return (
         <>
-            <Container component="div" sx={{p: 0, mb: 4}}>
+            <Card component="div" sx={{p: 3, mb: 7}}>
                 <Box sx={{mb: 2}}>
                     <Typography
                         component="p" 
@@ -37,26 +29,27 @@ export function RecentPartBlog ({blogContent}: {blogContent:BlogContent}) {
                         width="100%"
                         sx={{mt: 0, fontSize: '0.8rem'}}
                     >
-                        Published On: {formattedDate} by {blogContent.publisheralias}
+                        Published On: {publicationDate} by {blogContent.publisheralias}
                     </Typography>
                 </Box>
                 <Box>
-                    <Truncate
-                        lines={5}
+                    <TruncateMarkup
+                        lines={4}
                         ellipsis={
-                            <Button>
-                                Continue Reading...
-                            </Button>
-                        }                       
+                            <></>
+                        }                                 
                     >                     
-                        {parse(blogContent.content)}                    
-                    </Truncate>
+                        <Box component={"div"}>{parse(blogContent.content)}</Box>                   
+                    </TruncateMarkup>
+                </Box>
+
+                <Box>
+                    <Button sx={{p: 0, mt: 2}}>
+                        Continue Reading...
+                    </Button>
                 </Box>
                 
-            </Container>
-            <Box >
-
-            </Box>
+            </Card>            
         </>
     );
 }

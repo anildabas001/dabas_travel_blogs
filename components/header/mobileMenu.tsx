@@ -7,6 +7,7 @@ import {
     MenuItem
 } from "@mui/material"; 
 import MenuIcon from '@mui/icons-material/Menu';
+import Link from "next/link";
 
 export default function MobileMenu ({pages}: {pages: string[]}) {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -52,9 +53,12 @@ export default function MobileMenu ({pages}: {pages: string[]}) {
               }}
             >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
-                  </MenuItem>
+                    <Link href={`/${page.toLowerCase()}`}>
+                        <MenuItem key={page} onClick={handleCloseNavMenu}>
+                            <Typography textAlign="center">{page}</Typography>
+                        </MenuItem>
+                    </Link>
+                  
                 ))}
             </Menu>
         </>

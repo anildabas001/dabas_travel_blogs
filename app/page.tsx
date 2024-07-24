@@ -9,6 +9,7 @@ import Header from "@/components/header/header";
 import trip_image from "@/assets/images/travel_blog.jpg";
 import MessageWindow from "@/components/messageWindow";
 import RecentBlogs from "@/components/blogs/recentBlogs";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
@@ -25,12 +26,14 @@ export default function Home() {
                 <MessageWindow image={trip_image} title={"Welcome to TripTales"} message={"Where Every Journey Tells a Story"}/>
               </section>
               <Grid container spacing={2}>
-                <Grid item md={10} xs={12}>
+                <Grid item md={9} xs={12}>
                   <section>
-                    <RecentBlogs />
+                    <Suspense fallback={"Loading..."}>
+                      <RecentBlogs />
+                    </Suspense>                    
                   </section>                  
                 </Grid>
-                <Grid item md={2} xs={12}>
+                <Grid item md={3} xs={12}>
                   <section>
                     {/* <Archives /> */}
                   </section>                   

@@ -2,6 +2,7 @@ import { getRecentBlogs } from "@/lib/authDbTransactions";
 import { Box, Typography, Divider } from "@mui/material";
 import { RecentPartBlog } from "./recentPartBlog";
 import { ReactNode } from "react";
+import PageHeading from "../pageHeading";
 
 
 export default async function RecentBlogs () {
@@ -22,7 +23,7 @@ export default async function RecentBlogs () {
     
     if (blogs.length > 0) {
         blogElements = blogs.map(blog => (
-            <RecentPartBlog blogContent={{
+            <RecentPartBlog key={blog.id} blogContent={{
                 id: blog.id, 
                 title: blog.title,
                 content: blog.content,
@@ -33,23 +34,23 @@ export default async function RecentBlogs () {
         ));
     }
     return (
-        <Box component={"div"} sx={{borderRight: "1.8px solid rgba(0, 0, 0, 0.12)"}}>
-            <Typography
+        <Box component={"div"} sx={{borderRight: "1.8px solid rgba(0, 0, 0, 0.12)", paddingRight: 2}}>
+            {/* <Typography
                 component="h3" 
                 variant="h3" 
                 color="inherit" 
                 textAlign="center"
                 width="100%"
                 sx={{mt: 4, mb: 2}}
-            >
-                Most Recent Blogs
-            </Typography>
+            > */}
+                <PageHeading heading="Most Recent Blogs"></PageHeading>
+            {/* </Typography> */}
             <Divider sx={{
                 borderColor: 'grey',
                 borderWidth: '1px',
-                width: '70%',
+                width: '30%',
                 margin: '0 auto',
-                mb: 8
+                mb: 3
                 }} 
             />
             {

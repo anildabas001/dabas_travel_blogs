@@ -14,6 +14,12 @@ export enum FormType {
     'signUp' = 'Sign up'
 }
 
+export type FormField = {
+    value: string;
+    error: boolean;
+    errorMessage: string;
+}
+
 export type Status =  'success' | 'fail'
 
 export type APIFormat = {status: Status, message: string[], data: {}}

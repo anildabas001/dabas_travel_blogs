@@ -7,12 +7,8 @@ import {
  } from "@mui/material"; 
 import LogoBlog from "@/components/logoBlog";
 import MobileMenu from "./mobileMenu";
-import { getServerSession } from "next-auth";
 import Link from "next/link";
 import UserMenu from "./userMenu";
-import authOptions from "@/app/api/auth/[...nextauth]/authOptions";
-import { getUserDetails } from "@/lib/authDbTransactions";
-import{UserData} from "@/types";
 
 const pages = ['Blogs', 'Write'];
 const settings = ['Profile', 'Change Password', 'Logout'];
@@ -71,13 +67,16 @@ export default async function Header ({title}: {title: string;}){
                     </Typography> */}
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                       {pages.map((page) => (
-                        <Button
-                          key={page}
-                        //   onClick={handleCloseNavMenu}
-                          sx={{ my: 2, display: 'block' }}
-                        >
-                          {page}
-                        </Button>
+                        <Link href={`/${page.toLowerCase()}`}>
+                            <Button
+                                  key={page}
+                                //   onClick={handleCloseNavMenu}
+                                  sx={{ my: 2, display: 'block' }}
+                                >
+                                  {page}
+                            </Button>
+                        </Link>
+                        
                       ))}
                     </Box>
                   
