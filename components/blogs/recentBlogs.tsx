@@ -1,4 +1,4 @@
-import { getRecentBlogs } from "@/lib/authDbTransactions";
+import { getRecentBlogs } from "@/lib/blogDbTransactions";
 import { Box, Typography, Divider } from "@mui/material";
 import { RecentPartBlog } from "./recentPartBlog";
 import { ReactNode } from "react";

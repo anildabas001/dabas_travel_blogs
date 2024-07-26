@@ -11,7 +11,6 @@ import {
  import Avatar from '@mui/material/Avatar';
  import Link from "next/link";
  import { signOut } from "next-auth/react";
- import {UserData} from "@/types";
 import { getSession } from "next-auth/react";
 
 export default function UserMenu ({settings}:{settings: string[]}) {

@@ -5,13 +5,10 @@ import Fieldset from "@/components/fieldSet";
 import { FormField } from "@/types";
 import ContentEditor from "./contentEditor";
 import AlertModal from "../alertModal";
-
-const headerData = {
-    "Authorization": `Bearer ${process.env.GEO_AUTH_TOKEN}`,
-    "Accept": "application/json"
-}
+import { useRouter } from "next/navigation";
 
 export default function BlogForm () {
+    const router = useRouter();
     //form fields
     let [countrySelected, updateCountrySelected] = useState<FormField>({
         value: '',
@@ -31,6 +28,8 @@ export default function BlogForm () {
         errorMessage: ''
     });
 
+    //auth token for location api
+    const [authToken, updateAuthToken] = useState<string>('');
 
     // using ref to contain current values
     const prevCountrySelected = useRef<string>('');
@@ -51,6 +50,9 @@ export default function BlogForm () {
     const [messages, setMessages] = React.useState<ReactNode[]>([]);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    //state to manage request pending
+    const [loading, updateLoading] = useState<boolean>(false);
 
     const handleChange = (event: SelectChangeEvent, valueToChange: string) => {
         switch (valueToChange) {
@@ -94,13 +96,15 @@ export default function BlogForm () {
 
 
 
-    function formSubmitHandler (event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) {
+    async function formSubmitHandler (event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) {
         event.preventDefault();
 
+        updateLoading(true);
+
         let title = titleElement.current?.value || '';
-        let alias = publisherAlias.current?.value;
-        let location = `${countrySelected}/${stateSelected}/${citySelected}`;
-        let content = editorRef.current.getContent();
+        let alias = publisherAlias.current?.value || '';
+        let location = `${countrySelected.value}/${stateSelected.value}/${citySelected.value}`;
+        let content = editorRef.current.getContent() || '';
 
         console.log('content', content);
 
@@ -109,9 +113,71 @@ export default function BlogForm () {
 
         if (!isFormValid) {
             handleOpen();
-            return
+            return;
         }
+
+        let formData = new FormData();
+
+        formData.append('title', title);
+        formData.append('publisherAlias', alias);
+        formData.append('location', location);
+        formData.append('content', content);
+
+        try {
+            let response = await fetch ('/api/posts', {
+                method: 'POST',
+                body: formData,
+                headers: {'Accept': 'application/json, text/plain, */*'},
+            });
+            
+            if (!response.ok) {
+                throw new Error ('Saving of Post failed.');
+            }
+
+            router.push('/blogs');
+
+        } catch (err: any) {
+            setMessages(['Post can not be saved due to error on server.']);
+            handleOpen();
+        }       
+            
+        updateLoading(false);
     }
+
+    useEffect(() => {
+        async function fetchAuthToken() {
+            if (!authToken) {
+                try {
+                    let response = await fetch ("https://www.universal-tutorial.com/api/getaccesstoken",
+                        {
+                            headers: {
+                                "Accept": "application/json",
+                                "api-token": `${process.env.NEXT_PUBLIC_LOCATION_TOKEN}`,
+                                "user-email": `${process.env.NEXT_PUBLIC_LOCATION_EMAIL}`
+                            }
+                        }
+                    );
+    
+                    if (!response.ok) {
+                        throw new Error('Failed to generate Auth Token.');
+                    }
+
+                    let tokenData = await response.json();
+                    let authToken = tokenData.auth_token;
+
+                    if (authToken) {
+                        updateAuthToken(authToken);
+                    }
+
+                } catch (err: any) {
+                    console.log(err.message)
+                }
+                
+            }
+        }       
+        
+        fetchAuthToken();
+    }, [authToken]);
 
     useEffect (() => {
         async function fetchStateAndCitydata (changedVariable: string) {
@@ -130,14 +196,18 @@ export default function BlogForm () {
                 let response = await fetch (apiToUse,
                     {
                         headers: {
-                            "Authorization": `Bearer ${process.env.NEXT_PUBLIC_GEO_AUTH_TOKEN}`,
+                            "Authorization": `Bearer ${authToken}`,
                             "Accept": "application/json",
                         }
                     }
                 );
+
+                if (response.status === 401 || response.status === 403) {
+                    updateAuthToken('');
+                }
     
-                if (! response.ok) {
-                    console.log();
+                if (!response.ok) {
+                    console.log('Failed to get country data.');
                 } else {
                     if (changedVariable === 'country') {
                         let states: {
@@ -160,6 +230,11 @@ export default function BlogForm () {
             }
                    
         }
+
+        if (!authToken) {
+            return;
+        }
+
         if (countrySelected.value != prevCountrySelected.current && countrySelected.value) {
             fetchStateAndCitydata('country');
             updateCitySelected((state) => {
@@ -190,7 +265,7 @@ export default function BlogForm () {
             console.log('ran on Mount')
         }     
         
-    }, [countrySelected, stateSelected]);
+    }, [countrySelected, stateSelected, authToken]);
 
     useEffect (() => {
         async function fetchCountrydata () {
@@ -200,11 +275,15 @@ export default function BlogForm () {
                 let response = await fetch (countriesApi,
                     {
                         headers: {
-                            "Authorization": `Bearer ${process.env.NEXT_PUBLIC_GEO_AUTH_TOKEN}`,
+                            "Authorization": `Bearer ${authToken}`,
                             "Accept": "application/json",
                         }
                     }
                 );
+
+                if (response.status === 401 || response.status === 403) {
+                    updateAuthToken('');
+                }
     
                 if (! response.ok) {
                     console.log();
@@ -224,9 +303,13 @@ export default function BlogForm () {
                 
         }
 
+        if (!authToken) {
+            return;
+        }
+
         fetchCountrydata();
         
-    }, []);
+    }, [authToken]);
 
     return (            
             <Box
@@ -317,7 +400,7 @@ export default function BlogForm () {
                             <ContentEditor editorRef={editorRef}/>
                         </Grid>
                         <Box sx={{width: '100%', m: 3, display: 'flex', justifyContent: 'center'}}>
-                            <Button variant="contained" size="large" type="submit">
+                            <Button disabled={loading} variant="contained" size="large" type="submit">
                                 Submit Blog
                             </Button>
                         </Box>
