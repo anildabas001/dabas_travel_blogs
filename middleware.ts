@@ -19,6 +19,12 @@ export default async function middleware (request: NextRequest) {
         return NextResponse.redirect(url);
     }
 
+    if (request.nextUrl.pathname === '/write' && !validUserSession) {
+        console.log('redirecting')
+        url.pathname = '/auth'
+        return NextResponse.redirect(url);
+    }
+
     return NextResponse.next({
         request: {
             headers: requestHeaders,

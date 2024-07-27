@@ -29,12 +29,12 @@ export default async function RecentBlogs () {
                 content: blog.content,
                 location: blog.location,
                 publicationdate: blog.publicationdate,
-                publisheralias: blog.publisheralias
+                publisheralias: blog.publisheralias ? blog.publisheralias : blog.name
             }} />
         ));
     }
     return (
-        <Box component={"div"} sx={{borderRight: "1.8px solid rgba(0, 0, 0, 0.12)", paddingRight: 2}}>
+        <Box component={"div"} sx={{paddingRight: 1}}>
             {/* <Typography
                 component="h3" 
                 variant="h3" 
@@ -47,10 +47,10 @@ export default async function RecentBlogs () {
             {/* </Typography> */}
             <Divider sx={{
                 borderColor: 'grey',
-                borderWidth: '1px',
+                borderWidth: '0px',
                 width: '30%',
                 margin: '0 auto',
-                mb: 3
+                mb: 4
                 }} 
             />
             {

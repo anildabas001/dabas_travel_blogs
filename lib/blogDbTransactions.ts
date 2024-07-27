@@ -13,7 +13,7 @@ export async function saveBlogData(blogData: {
 }
 
 export async function getRecentBlogs () {
-    const text = 'SELECT * from posts ORDER BY publicationDate DESC LIMIT 3';
+    const text = 'SELECT posts.*, users.name from posts JOIN users ON posts.userId = users.id ORDER BY publicationDate DESC LIMIT 3';
 
     const res = await query(text);
     console.log('most recent rows', res.rows)

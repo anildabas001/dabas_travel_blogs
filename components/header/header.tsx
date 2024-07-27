@@ -9,6 +9,7 @@ import LogoBlog from "@/components/logoBlog";
 import MobileMenu from "./mobileMenu";
 import Link from "next/link";
 import UserMenu from "./userMenu";
+import HeaderLink from "./headerLink";
 
 const pages = ['Blogs', 'Write'];
 const settings = ['Profile', 'Change Password', 'Logout'];
@@ -23,23 +24,24 @@ export default async function Header ({title}: {title: string;}){
             {/* <AppBar sx={{px: 0, borderBottom: 1, borderColor: 'divider', border: 0}} component="nav" position="static"> */}
                 <Toolbar sx={{ borderBottom: 1, borderColor: 'divider', backgroundColor: "#fff"}}>
                     <LogoBlog sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-                    <Typography
-                        variant="h5"
-                        noWrap
-                        component="span"
-                        sx={{
-                          mr: 2,
-                          display: { xs: 'none', md: 'flex' },
-                          fontFamily: 'monospace',
-                          fontWeight: 700,
-                          letterSpacing: '.3rem',
-                          color: 'black',
-                          textDecoration: 'none',
-                        }}
-                    >
-                        {title}
-                    </Typography>
-
+                    <Link href="/">
+                      <Typography
+                          variant="h5"
+                          noWrap
+                          component="span"
+                          sx={{
+                            mr: 2,
+                            display: { xs: 'none', md: 'flex' },
+                            fontFamily: 'monospace',
+                            fontWeight: 700,
+                            letterSpacing: '.3rem',
+                            color: 'black',
+                            textDecoration: 'none',
+                          }}
+                      >
+                          {title}
+                      </Typography>
+                    </Link>    
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <MobileMenu pages={pages}/>
                     </Box>
@@ -67,16 +69,9 @@ export default async function Header ({title}: {title: string;}){
                     </Typography> */}
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                       {pages.map((page) => (
-                        <Link href={`/${page.toLowerCase()}`}>
-                            <Button
-                                  key={page}
-                                //   onClick={handleCloseNavMenu}
-                                  sx={{ my: 2, display: 'block' }}
-                                >
-                                  {page}
-                            </Button>
-                        </Link>
-                        
+                        <HeaderLink href={`/${page.toLowerCase()}`}>                            
+                          {page}
+                        </HeaderLink>                        
                       ))}
                     </Box>
                   
