@@ -11,6 +11,7 @@ import MessageWindow from "@/components/messageWindow";
 import RecentBlogs from "@/components/blogs/recentBlogs";
 import { Suspense } from "react";
 import About from "@/components/about";
+import Contact from "@/components/contact/contact";
 
 export default function Home() {
   return (
@@ -37,7 +38,10 @@ export default function Home() {
                 <Grid item md={4} xs={12}>
                   <section>
                     <About />
-                  </section>                   
+                  </section>    
+                  <section>
+                    <Contact />
+                  </section>                
                 </Grid>
               </Grid>
             </main>

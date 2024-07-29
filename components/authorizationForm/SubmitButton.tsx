@@ -5,7 +5,6 @@ import { FormType } from '@/types';
 
 export default function SubmitButton ({children, formType, disabled }: {children: ReactNode; formType: string; disabled: boolean}) {
     let {pending} = useFormStatus();
-    console.log('dssddfs', formType, disabled)
     return (
         <Button
             type="submit"

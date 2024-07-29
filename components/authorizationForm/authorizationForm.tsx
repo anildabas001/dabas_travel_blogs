@@ -128,7 +128,7 @@ export default function AuthorizationForm () {
         const validateResult = validateLogin(email, password);
 
         //if valid, prepare formData and send the fetch request
-        if (!validateResult) {return;}
+        if (!validateResult) {updateLoading(false); return;}
 
         const result = await signIn("credentials", {
             redirect: false,
@@ -136,8 +136,7 @@ export default function AuthorizationForm () {
             password,
         });
 
-        if (result?.error) {
-            updateLoading(false);
+        if (result?.error) {            
             errorStatus = true;
             errorMessage.push(result.error);
         } else {
@@ -147,7 +146,7 @@ export default function AuthorizationForm () {
             setTimeout(() => {router.replace('/');}, 500)
             
         }
-
+        updateLoading(false);
         setErrorStatus(errorStatus);
         setErrorMessage(errorMessage);
     };
