@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 
 export default function PageHeading ({heading}: {heading: string}) {
     return (
-        <Box sx={{mt: 3}}>
+        <Box sx={{mt: 2}}>
             <Typography
                 component="h4"
                 variant="h4"

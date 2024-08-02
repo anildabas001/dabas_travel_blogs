@@ -14,6 +14,7 @@ export default function Contact () {
     const [modalOpen, updateModalState] = useState<boolean>(false);
     const [modalMessages, updateModalMessage] = useState<string[]>([]);
     const [errorMessages, updateErrorMessage] = useState<string[]>([]);
+    const [loading, updateLoading] = useState<boolean>(false);
 
     function validateMail (senderName: string, senderEmail: string, senderMessage: string): boolean {
         let isValid = true;
@@ -38,11 +39,12 @@ export default function Contact () {
 
     function sendMessage(event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) {
         event.preventDefault();
-        console.log('...................')
+        updateLoading(true);
         let senderName: string = name.current?.value || '';
         let senderEmail: string = email.current?.value || '';
         let senderMessage: string = message.current?.value || '';
         if (!validateMail(senderName, senderEmail, senderMessage)) {
+            updateLoading(false);
             return;
         }
         const templateParams = {
@@ -63,24 +65,26 @@ export default function Contact () {
                 }
               );
 
-            if (name.current) {
-              name.current.value = '';
-            }
-            if (email.current) {
-                email.current.value = '';
-              }
-              if (message.current) {
-                message.current.value = '';
-              }
+        if (name.current) {
+            name.current.value = '';
+        }
+        if (email.current) {
+            email.current.value = '';
+        }
+        if (message.current) {
+            message.current.value = '';
+        }
+
+        updateLoading(false);
     }
     return(
-        <Box component={'form'} onSubmit ={sendMessage} sx={{backgroundColor: '#ebebed', p: 2, borderRadius: 1, m:1, mt: 3}}>
+        <Box component={'form'} onSubmit ={sendMessage} sx={{backgroundColor: '#ebebed', p: 2, borderRadius: 1, m:1, mt: 2, pb: 4}}>
             <PageHeading heading="Contact Us" />
             <AlertModal title={"Contact Us"} messages={modalMessages} open={modalOpen} handleClose={function (): void {
                     updateModalState(false);
                     updateModalMessage([]);
             } } />
-            <Grid sx={{mt: 1.5}} container justifyContent={"cennter"} xs={12} spacing={1}>
+            <Grid sx={{mt: 1}} container justifyContent={"cennter"} xs={12} spacing={1}>
                 <Grid item xs={12}>
                     <TextField inputRef={name} fullWidth id="name" label="Name" variant="standard" />
                 </Grid>
@@ -99,8 +103,8 @@ export default function Contact () {
                         )
                     }
                 </Grid>
-                <Grid item xs={!2} sx={{margin: '0 auto'}}>
-                    <Button sx={{color:"#fff"}} variant="contained" fullWidth type="submit">
+                <Grid item xs={!2} sx={{margin: '6px auto'}}>
+                    <Button disabled={loading} sx={{color:"#fff"}} variant="contained" fullWidth type="submit">
                         Submit your Message
                     </Button>
                 </Grid>
