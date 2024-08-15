@@ -19,21 +19,22 @@ import { Alert } from '@mui/material';
 import {useRouter, useSearchParams, usePathname} from 'next/navigation';
 import { validateEmail } from '@/lib/utility';
 import { signIn } from 'next-auth/react';
+import Footer from '../footer';
 
-type muiStyle = {
-    sx: SxProps<Theme>;
-}
+// type muiStyle = {
+//     sx: SxProps<Theme>;
+// }
 
-function Copyright(props: muiStyle) {
-    return (
-      <Typography variant="body2" color="text.secondary" align="center" {...props}>
-        {'Copyright © '}
-          Dabas Travel Blogs{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
-    );
-}
+// function Copyright(props: muiStyle) {
+//     return (
+//       <Typography variant="body2" color="text.secondary" align="center" {...props}>
+//         {'Copyright © '}
+//           Dabas Travel Blogs{' '}
+//         {new Date().getFullYear()}
+//         {'.'}
+//       </Typography>
+//     );
+// }
 
 const defaultTheme = createTheme();
 
@@ -255,7 +256,7 @@ export default function AuthorizationForm () {
                 </Box>
               </CustomForm>              
             </Box>
-            <Copyright sx={{ mt: 8, mb: 4 }} />
+            <Footer sx={{ mt: 8, mb: 4 }} />
           </Container>
         </ThemeProvider>
     );

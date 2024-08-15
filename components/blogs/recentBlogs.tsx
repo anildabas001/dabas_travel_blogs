@@ -28,6 +28,7 @@ export default async function RecentBlogs () {
                 title: blog.title,
                 content: blog.content,
                 location: blog.location,
+                image: blog.image_url,
                 publicationdate: blog.publicationdate,
                 publisheralias: blog.publisheralias ? blog.publisheralias : blog.name
             }} />

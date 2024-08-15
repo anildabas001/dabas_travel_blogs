@@ -4,8 +4,8 @@ import { type Status } from "@/types";
 export async function saveBlogData(blogData: {
     [k: string]: FormDataEntryValue;
 }) {
-    const text = 'INSERT INTO posts(title, content, location, publisherAlias, publicationDate, userid) VALUES($1, $2, $3, $4, $5, $6) RETURNING id';
-    const values = [blogData.title, blogData.content, blogData.location, blogData.publisherAlias, new Date(), blogData.userId];
+    const text = 'INSERT INTO posts(title, content, location, publisherAlias, publicationDate, userid, image_url) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id';
+    const values = [blogData.title, blogData.content, blogData.location, blogData.publisherAlias, new Date(), blogData.userId, blogData.imageURL];
      
     const res = await query(text, values);
 

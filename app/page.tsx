@@ -12,6 +12,7 @@ import RecentBlogs from "@/components/blogs/recentBlogs";
 import { Suspense } from "react";
 import About from "@/components/about";
 import Contact from "@/components/contact/contact";
+import Footer from "@/components/footer";
 
 export default function Home() {
   return (
@@ -46,7 +47,8 @@ export default function Home() {
               </Grid>
             </main>
           </Grid>
-        </Grid>       
+        </Grid>    
+        <Footer sx={{ mt: 8, mb: 4 }} />   
       </Container>
     </ThemeWrapper>
   );

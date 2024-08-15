@@ -1,11 +1,21 @@
 'use client';
-import React, {useState, useEffect, useRef, ReactNode} from "react";
+import React, {useState, useEffect, useRef, ReactNode, ChangeEvent} from "react";
 import { Alert, Box, FormControl, Grid, InputLabel, MenuItem, Select, TextField, SelectChangeEvent, Typography, Button } from "@mui/material";
 import Fieldset from "@/components/fieldSet";
 import { FormField } from "@/types";
 import ContentEditor from "./contentEditor";
 import AlertModal from "../alertModal";
 import { useRouter } from "next/navigation";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+
+const VisuallyHiddenInput = ({ onChange}: {onChange: (event: ChangeEvent<HTMLInputElement>) => void}) => (
+    <input
+      type="file"
+      accept="image/*"
+      style={{ display: 'none' }}
+      onChange={onChange}
+    />
+);
 
 export default function BlogForm () {
     const router = useRouter();
@@ -27,6 +37,11 @@ export default function BlogForm () {
         error: false,
         errorMessage: ''
     });
+
+    //image file and its name
+
+    const [fileName, setFileName] = useState<string>('');
+    const [blogHeaderImage, setBlogHeaderImage] = useState<File>();
 
     //auth token for location api
     const [authToken, updateAuthToken] = useState<string>('');
@@ -91,10 +106,21 @@ export default function BlogForm () {
             isFormValid = false;
         }
 
+        if (!fileName && !blogHeaderImage) {
+            messages.push(<Alert severity="error">Please upload the header image for blog.</Alert>);
+            isFormValid = false;
+        }
+
         return {isFormValid, messages};
     }
 
-
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
+          const selectedFile = event.target.files[0];
+          setFileName(selectedFile.name);
+          setBlogHeaderImage(selectedFile);
+        }
+    };
 
     async function formSubmitHandler (event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) {
         event.preventDefault();
@@ -105,8 +131,7 @@ export default function BlogForm () {
         let alias = publisherAlias.current?.value || '';
         let location = `${countrySelected.value}/${stateSelected.value}/${citySelected.value}`;
         let content = editorRef.current.getContent() || '';
-
-        console.log('content', content);
+        let blogImage = blogHeaderImage || '';
 
         const {isFormValid, messages} = validateForm(title, content);
         setMessages(messages);
@@ -122,6 +147,7 @@ export default function BlogForm () {
         formData.append('publisherAlias', alias);
         formData.append('location', location);
         formData.append('content', content);
+        formData.append('blogHeaderImage', blogImage);
 
         try {
             let response = await fetch ('/api/posts', {
@@ -390,6 +416,24 @@ export default function BlogForm () {
                                 </Grid> 
                             </Grid>
                         </Fieldset>
+                        <Grid sx={{mt: 2, mb: 3}} item xs={12}>
+                            <Box sx={{display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
+                                <Button
+                                  sx={{m: 1, width: '50%'}}
+                                  component="label"
+                                  role={undefined}
+                                  variant="contained"
+                                  tabIndex={-1}
+                                  startIcon={<CloudUploadIcon />}
+                                >
+                                    Upload Image
+                                    <VisuallyHiddenInput onChange={handleFileChange} />
+                                </Button>   
+                                <Typography textAlign={"center"}>
+                                    {fileName ? `File Name: ${fileName}`: null}
+                                </Typography>                                         
+                            </Box>                                            
+                        </Grid>
                         <Grid item xs ={12}>
                             <Typography
                                 component="p"

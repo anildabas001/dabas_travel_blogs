@@ -13,5 +13,6 @@ CREATE TABLE posts (
     publicationDate TIMESTAMP,
     publisherAlias VARCHAR(255),
 	userId INT,
+    image_url VARCHAR(255),
     Foreign key (userId) references users(id)
 );
