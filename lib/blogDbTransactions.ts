@@ -18,4 +18,11 @@ export async function getRecentBlogs () {
     const res = await query(text);
     console.log('most recent rows', res.rows)
     return res.rows;
+} 
+
+export async function getBlogPosts (paginationValue = 5) {
+    const text = 'SELECT posts.*, users.name from posts JOIN users ON posts.userId = users.id ORDER BY publicationDate DESC LIMIT $1';
+    let values = [paginationValue]
+    const res = await query(text, values);
+    return res.rows;
 }

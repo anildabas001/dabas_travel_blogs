@@ -7,7 +7,7 @@ import parse from 'html-react-parser';
 import TruncateMarkup from 'react-truncate-markup';
 import { CldImage } from 'next-cloudinary';
 
-export function RecentPartBlog ({blogContent}: {blogContent:BlogContent}) {
+export function BlogTemplate ({blogContent}: {blogContent:BlogContent}) {
     const publicationDate = dateFormat(blogContent?.publicationdate);
     console.log(blogContent);
 

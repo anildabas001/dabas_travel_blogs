@@ -1,5 +1,5 @@
 export const dynamic = 'force-dynamic'
-import { saveBlogData } from '@/lib/blogDbTransactions';
+import { getBlogPosts, saveBlogData } from '@/lib/blogDbTransactions';
 import { uploadImage } from '@/lib/cloudinaryImageUpload';
 import { revalidatePath } from 'next/cache';
 import { NextResponse, type NextRequest } from 'next/server';
@@ -40,5 +40,29 @@ export async function POST (req: NextRequest) {
         status: 'success',
         message: '',
         data: {postId: postId}
+    });
+}
+
+
+export async function GET (req: NextRequest) {
+    let posts: any;
+
+    try {        
+        posts = await getBlogPosts();
+    } catch (err: any) {
+        console.log(err.message)
+        return NextResponse.json({
+            status: 'fail',
+            message: 'Currently no blogs are available.',
+            data: {}
+        }, {status: 500});
+    }
+    
+    revalidatePath('/', 'layout');
+
+    return NextResponse.json({
+        status: 'success',
+        message: '',
+        data: {posts: posts}
     });
 }

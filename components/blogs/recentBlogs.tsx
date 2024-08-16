@@ -1,6 +1,6 @@
 import { getRecentBlogs } from "@/lib/blogDbTransactions";
 import { Box, Typography, Divider } from "@mui/material";
-import { RecentPartBlog } from "./recentPartBlog";
+import { BlogTemplate } from "./blogTemplate";
 import { ReactNode } from "react";
 import PageHeading from "../pageHeading";
 
@@ -23,7 +23,7 @@ export default async function RecentBlogs () {
     
     if (blogs.length > 0) {
         blogElements = blogs.map(blog => (
-            <RecentPartBlog key={blog.id} blogContent={{
+            <BlogTemplate key={blog.id} blogContent={{
                 id: blog.id, 
                 title: blog.title,
                 content: blog.content,
