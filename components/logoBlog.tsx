@@ -14,7 +14,6 @@ export default function LogoBlog (props: muiStyle) {
             <Avatar sx={props.sx}>
                 <Image priority src={blogImage} alt="blog logo"/>
             </Avatar>
-        </Link>
-        
+        </Link>        
     );
 }
