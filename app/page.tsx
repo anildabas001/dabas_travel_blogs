@@ -13,6 +13,7 @@ import { Suspense } from "react";
 import About from "@/components/about";
 import Contact from "@/components/contact/contact";
 import Footer from "@/components/footer";
+import Progress from "@/components/circularProgress";
 
 export default function Home() {
   return (
@@ -31,7 +32,7 @@ export default function Home() {
               <Grid container spacing={2}>
                 <Grid item md={8} xs={12}>
                   <section>
-                    <Suspense fallback={"Loading..."}>
+                    <Suspense fallback={<Progress/>}>
                       <RecentBlogs />
                     </Suspense>                    
                   </section>                  

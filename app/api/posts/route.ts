@@ -1,5 +1,5 @@
 export const dynamic = 'force-dynamic'
-import { getBlogPosts, saveBlogData } from '@/lib/blogDbTransactions';
+import { geBlogPostsCount, getBlogPosts, saveBlogData } from '@/lib/blogDbTransactions';
 import { uploadImage } from '@/lib/cloudinaryImageUpload';
 import { revalidatePath } from 'next/cache';
 import { NextResponse, type NextRequest } from 'next/server';
@@ -45,10 +45,15 @@ export async function POST (req: NextRequest) {
 
 
 export async function GET (req: NextRequest) {
+    let pageNumber = parseInt(req.nextUrl.searchParams.get("page") || '');
+    pageNumber = pageNumber ? pageNumber : 1;
+    let pageOffset = (pageNumber - 1) * 5;
     let posts: any;
-
+    let totalPosts = 0;
     try {        
-        posts = await getBlogPosts();
+        posts = await getBlogPosts(pageOffset);
+        totalPosts = await geBlogPostsCount();
+
     } catch (err: any) {
         console.log(err.message)
         return NextResponse.json({
@@ -63,6 +68,6 @@ export async function GET (req: NextRequest) {
     return NextResponse.json({
         status: 'success',
         message: '',
-        data: {posts: posts}
+        data: {posts: posts, totalPosts: totalPosts}
     });
 }

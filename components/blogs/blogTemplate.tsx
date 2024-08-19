@@ -71,8 +71,8 @@ export function BlogTemplate ({blogContent}: {blogContent:BlogContent}) {
                     </Box>
                     
                 </Box>   
-                <Box sx={{p: 1, width: '100%', display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end'}}>
-                    <Button sx={{p: 0, mt: 2}}>
+                <Box sx={{p: 1, width: '100%', display: 'flex', justifyContent: 'flex-end'}}>
+                    <Button sx={{p: 0, mt: 1}}>
                         Continue Reading...
                     </Button>
                 </Box>

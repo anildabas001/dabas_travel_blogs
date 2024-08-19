@@ -20,9 +20,16 @@ export async function getRecentBlogs () {
     return res.rows;
 } 
 
-export async function getBlogPosts (paginationValue = 5) {
-    const text = 'SELECT posts.*, users.name from posts JOIN users ON posts.userId = users.id ORDER BY publicationDate DESC LIMIT $1';
+export async function getBlogPosts (paginationValue = 0) {
+    const text = 'SELECT posts.*, users.name from posts JOIN users ON posts.userId = users.id ORDER BY publicationDate DESC LIMIT 5 Offset $1';
     let values = [paginationValue]
     const res = await query(text, values);
     return res.rows;
+}
+
+export async function geBlogPostsCount () {
+    const text = 'SELECT Count(*) from posts';
+    const res = await query(text);
+    console.log(res.rows);
+    return res.rows[0].count;
 }
