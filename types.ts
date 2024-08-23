@@ -9,6 +9,12 @@ export type signUpData = {
     name: string;
 }
 
+export enum searchByType {
+    'Location' = 'location',
+    'Publisher' = 'publisher',
+    'Title' = 'title'
+}
+
 export enum FormType {
     'login' = 'Login',
     'signUp' = 'Sign up'

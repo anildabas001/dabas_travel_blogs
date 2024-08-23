@@ -1,8 +1,10 @@
 import { getRecentBlogs } from "@/lib/blogDbTransactions";
-import { Box, Typography, Divider } from "@mui/material";
+import { Box, Typography, Divider, Button } from "@mui/material";
 import { BlogTemplate } from "./blogTemplate";
 import { ReactNode } from "react";
 import PageHeading from "../pageHeading";
+import Router from "next/router";
+import ShowAll from "./showAll";
 
 
 export default async function RecentBlogs () {
@@ -57,6 +59,9 @@ export default async function RecentBlogs () {
             {
                 blogElements
             }
+
+            <ShowAll />
+
         </Box>
         
     );
