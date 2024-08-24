@@ -46,13 +46,17 @@ export async function POST (req: NextRequest) {
 
 export async function GET (req: NextRequest) {
     let pageNumber = parseInt(req.nextUrl.searchParams.get("page") || '');
+
+    let search = req.nextUrl.searchParams.get("search") || '';
+    let searchBy = req.nextUrl.searchParams.get("searchBy") || '';
+
     pageNumber = pageNumber ? pageNumber : 1;
     let pageOffset = (pageNumber - 1) * 5;
     let posts: any;
     let totalPosts = 0;
     try {        
-        posts = await getBlogPosts(pageOffset);
-        totalPosts = await geBlogPostsCount();
+        posts = await getBlogPosts(pageOffset, search, searchBy);
+        totalPosts = await geBlogPostsCount(search, searchBy);
 
     } catch (err: any) {
         console.log(err.message)

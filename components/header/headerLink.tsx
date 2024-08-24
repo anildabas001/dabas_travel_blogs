@@ -12,7 +12,6 @@ export default function HeaderLink ({href, children}: {href: string; children: R
                     {children}
                 </Button>
     if (path.includes(href)) {
-        console.log('here')
         button = <Button
           sx={{ my: 2, display: 'block'}}
         >

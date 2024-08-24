@@ -1,22 +1,17 @@
-'use client';
 import { searchByType } from '@/types';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, FormControl, FormControlLabel, FormLabel, IconButton, InputAdornment, Radio, RadioGroup, TextField } from '@mui/material';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, Ref } from 'react';
 
 
-export default function SearchField () {
-  const [searchBy, updatesearchBy] = useState<searchByType>(searchByType.Location);
-
-  function handleSearchByChange (evnt: ChangeEvent<HTMLInputElement>, value: string) {
-    updatesearchBy(value as searchByType);
-  }
+export default function SearchField ({searchField, initiateSearch, searchBy, handleSearchByChange}: {searchField:  Ref<HTMLInputElement>; initiateSearch: () => void, searchBy: searchByType; handleSearchByChange: (evnt: ChangeEvent<HTMLInputElement>, value: string) => void}) { 
 
   return (
       <Box sx={{display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center'}}>
           <TextField
               label="Search"
               variant="outlined"
+              inputRef={searchField}
               sx={{
                   m: 1,
                   width: '55%',
@@ -36,7 +31,7 @@ export default function SearchField () {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton>
+                    <IconButton onClick={initiateSearch}>
                       <SearchIcon />
                     </IconButton>
                   </InputAdornment>
