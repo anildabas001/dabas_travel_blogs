@@ -79,6 +79,13 @@ export async function geBlogPostsCount (search: string, searchBy: string) {
     }
 
     const res = await query(text, values);
-    console.log(res.rows);
     return res.rows[0].count;
+}
+
+export async function getBlogContent (id: string) {
+    let text = 'SELECT posts.*, users.name from posts JOIN users ON posts.userId = users.id WHERE posts.id = $1';
+    let values: any[] = [id];
+
+    const res = await query(text, values);
+    return res.rows[0];
 }

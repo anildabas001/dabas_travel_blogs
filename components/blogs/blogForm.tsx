@@ -127,11 +127,11 @@ export default function BlogForm () {
 
         updateLoading(true);
 
-        let title = titleElement.current?.value || '';
-        let alias = publisherAlias.current?.value || '';
+        let title = titleElement.current!.value;
+        let alias = publisherAlias.current!.value;
         let location = `${countrySelected.value}/${stateSelected.value}/${citySelected.value}`;
-        let content = editorRef.current.getContent() || '';
-        let blogImage = blogHeaderImage || '';
+        let content = editorRef.current.getContent();
+        let blogImage = blogHeaderImage!;
 
         const {isFormValid, messages} = validateForm(title, content);
         setMessages(messages);

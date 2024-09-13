@@ -32,11 +32,11 @@ export function BlogTemplate ({blogContent}: {blogContent:BlogContent}) {
                             <Typography
                                 component="p" 
                                 variant="caption" 
-                                color="inherit" 
+                                color="#6B6B6B" 
                                 width="100%"
                                 sx={{mt: 0, fontSize: '0.8rem'}}
                             >
-                                Published On: {publicationDate} by {blogContent.publisheralias}
+                                Published On: {publicationDate} by {blogContent.publisheralias ? blogContent.publisheralias : blogContent.name}
                             </Typography>
                         </Box> 
                         <Box sx={{p: 1}}>
